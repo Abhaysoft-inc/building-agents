@@ -1,0 +1,1 @@
+this is a simple frontend to call the llms, coz i have cli
