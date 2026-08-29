@@ -5,12 +5,12 @@ import json
 
 def calculator(expression):
     try:
-        result = eval(expression)
+        result = eval(expression) #vulnerable
         return str(result)
     except Exception as e:
         return f"Error: {e}"
 
-# describing a tool
+# describing a tool (tool schema)
 
 tools = [
     {
@@ -36,7 +36,7 @@ tools = [
 # telling the model that tools exists
 
 messages = [
-    {"role": "user", "content": "What is 847 times 23, plus 100?"}
+    {"role": "user", "content": "What's 15% of 200, and separately, what's 340 divided by 4?"}
 ]
 
 response = groq_client.chat.completions.create(
@@ -49,7 +49,7 @@ response_message = response.choices[0].message
 if response_message.tool_calls:
     tool_call = response_message.tool_calls[0]
     args = json.loads(tool_call.function.arguments)
-    result = calculator(args["expression"])
+    result = calculator(args["expression"]) ## executing the function
 
     messages.append(response_message)
     messages.append({
